@@ -1,0 +1,115 @@
+import Data.List
+
+data Serie = UnaSerie {
+    nombre :: String,
+    genero :: String,
+    duracion :: Int,
+    cantTemporadas :: Int,
+    calificaciones :: [Int],
+    esOriginalDeNetflis :: Bool
+} deriving (Show, Eq)
+
+tioGolpetazo = UnaSerie {
+    nombre = "One punch man",
+    genero = "Monito chino",
+    duracion = 24,
+    cantTemporadas = 1,
+    calificaciones = [5],
+    esOriginalDeNetflis = False
+}
+
+cosasExtranias = UnaSerie {
+    nombre = "Stranger things",
+    genero = "Misterio",
+    duracion = 50,
+    cantTemporadas = 2,
+    calificaciones = [3,3],
+    esOriginalDeNetflis = True
+}
+
+dbs = UnaSerie {
+    nombre = "Dragon ball supah",
+    genero = "Monito chino",
+    duracion = 150,
+    cantTemporadas = 5,
+    calificaciones = [],
+    esOriginalDeNetflis = False
+}
+
+espejoNegro = UnaSerie {
+    nombre = "Black mirror",
+    genero = "Suspenso",
+    duracion = 123,
+    cantTemporadas = 4,
+    calificaciones = [2],
+    esOriginalDeNetflis = True
+}
+
+rompiendoMalo = UnaSerie {
+    nombre = "Breaking Bad",
+    genero = "Drama",
+    duracion = 200,
+    cantTemporadas = 5,
+    calificaciones = [],
+    esOriginalDeNetflis = False
+}
+
+treceRazonesPorque = UnaSerie {
+    nombre = "13 reasons why",
+    genero = "Drama",
+    duracion = 50,
+    cantTemporadas = 1,
+    calificaciones = [1,4,5],
+    esOriginalDeNetflis = True
+}
+------------------------ Series
+maraton1 :: [Serie]
+maraton1 = [espejoNegro,dbs,treceRazonesPorque] -- 1.1
+
+maraton2 :: [Serie]
+maraton2 = [dbs,treceRazonesPorque,rompiendoMalo,espejoNegro,cosasExtranias]
+------------------------- Maratones 
+cantidadDeSeriesMaraton :: [Serie] -> Int
+cantidadDeSeriesMaraton series = length series -- 1.2
+
+esSeriePopular :: Serie -> Bool
+esSeriePopular serie = ((>= 3).length.calificaciones) serie -- 1.3
+
+serieValeLaPena :: Serie -> Bool
+serieValeLaPena serie = ((> 1).cantTemporadas) serie && esSeriePopular serie --1,4
+
+maratonValeLaPena :: [Serie] -> Bool
+maratonValeLaPena series = 
+  any ((== "Breaking Bad").nombre) series ||
+  (serieValeLaPena.head) series && (serieValeLaPena.last) series --1.5
+
+
+primeraMitadMaraton :: [Serie] -> [Serie]
+primeraMitadMaraton series = take (div (length series) 2) series
+
+segundaMitadMaraton :: [Serie] -> [Serie]
+segundaMitadMaraton series = drop ((length.primeraMitadMaraton) series) series
+
+maratonRepunta :: [Serie] -> Bool
+maratonRepunta series = not (maratonValeLaPena (primeraMitadMaraton series)) && maratonValeLaPena (segundaMitadMaraton series) --1.6
+
+calificacionSerie :: Serie -> Int
+calificacionSerie serie = div (sum(calificaciones serie)) ((length.calificaciones) serie) -- 1.7
+
+obtenerDispresionSerie :: Serie -> Int
+obtenerDispresionSerie serie = (maximum.calificaciones) serie - (minimum.calificaciones) serie -- 1.8
+
+
+calificarUnaSerie :: Serie -> Int -> Serie
+calificarUnaSerie serie nuevaCalificacion = serie {calificaciones = (calificaciones serie) ++ [nuevaCalificacion]} --1.9
+
+recibioUnaEstrella :: Serie -> Bool
+recibioUnaEstrella serie = any (==1) (calificaciones serie)
+
+hypear :: Int -> Int
+hypear calificacion  = (+2) calificacion - mod ((+2) calificacion) 5
+
+hypearSerie :: Serie -> Serie
+hypearSerie serie 
+  |not (recibioUnaEstrella(serie)) = serie {calificaciones = (hypear.head.calificaciones)serie : (tail.init.calificaciones)serie ++ [(hypear.last.calificaciones)serie]  } --1.10
+  |otherwise = serie
