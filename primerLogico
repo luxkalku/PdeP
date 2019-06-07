@@ -1,0 +1,32 @@
+/*
+alumno(jere).
+alumno(marquitos).
+alumno(andy).
+alumno(nacho).
+alumno(juancito).
+
+curso(jere,paradigmas).
+curso(marquitos, ads).
+curso(andy,paradigmas).
+curso(nacho,sintaxis).
+curso(juancito,sintaxis).
+curso(jere,ads).
+
+notaParadigmas(jere,8).
+notaParadigmas(marquitos,9).
+notaParadigmas(andy,6).
+notaParadigmas(juancito,3).
+notaParadigmas(nacho,7).
+*/
+
+programador(fernando,cobol).
+programador(fernando,visualBasic).
+programador(fernando,java).
+programador(julieta,java).
+programador(marcos,java).
+programador(santiago,ecmaScript).
+programador(santiago,java).
+rol(fernando,analistaFuncional).
+rol(andres,proyectLeader).
+
+esProgramador(Alguien) :- programador(Alguien,_).
