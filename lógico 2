@@ -1,0 +1,22 @@
+persona(liliana,mujer(24,universitario,0),argentina).
+persona(juan,varon(38,secundario), argentina).
+persona(laura,trans,argentina).
+persona(pedro,trans,argentina).
+
+esCis(Nombre):- persona(Nombre,_,_),not(persona(Nombre,trans,_)).
+
+esperanzaDeVida(Nombre,35):- persona(Nombre,trans,_).
+esperanzaDeVida(Nombre,80):- persona(Nombre,mujer(_,_,_),_).
+esperanzaDeVida(Nombre,72):- persona(Nombre,varon(_,_),_).
+
+esSuperior(universitario,_).
+esSuperior(Nivel,Nivel).
+esSuperior(secundario,primaria).
+
+consigueTrabajo(Nombre):- persona(Nombre,_,_),persona(Nombre,mujer(Edad,NivelEducativo,0),_), esSuperior(NivelEducativo,secundario), Edad<35.
+consigueTrabajo(Nombre):- persona(Nombre,_,_), persona(Nombre,varon(Edad,NivelEducativo),_), esSuperior(NivelEducativo, primaria), Edad<45.
+
+salarioEsperado(Nombre,35000):- consigueTrabajo(Nombre), persona(Nombre,varon(_,_),_).
+salarioEsperado(Nombre,35000*0.73):- consigueTrabajo(Nombre), persona(Nombre,mujer(_,_,_),_).
+salarioEsperado(Nombre,35000*1.2):- consigueTrabajo(Nombre), persona(Nombre,varon(_,NivelEducativo),_), esSuperior(NivelEducativo,universitario).
+salarioEsperado(Nombre,1.2*35000*0.73):- consigueTrabajo(Nombre), persona(Nombre,mujer(_,NivelEducativo,_),_), esSuperior(NivelEducativo,universitario).
