@@ -1,0 +1,111 @@
+class Jugada{
+	var property equipoQueConvirtio
+	var property ultimoJugador
+	var property circunstancias = #{}
+}
+
+
+
+class Falta {
+	var property minutoPartido
+	var property fuleador
+	var property fuleado
+	var property intensidadFalta
+	
+
+	
+	
+	method sacarTarjeta(jugada){
+		if (jugada.intensidadFalta() > 75)
+			jugada.fuleador().amonestado(true)
+	}
+}
+
+const jugadaDeTarjeta1 = new Falta(
+	minutoPartido = 43,
+	fuleador = Zarate,
+	fuleado = Sand,
+	intensidadFalta = 78
+)
+
+class PeleaEnLaCancha{
+	var property minutoPartido
+	var property involucrados
+	
+	method sacarTarjeta(jugada)
+}
+
+class Equipo {
+	var property nombreEquipo
+	var property campeonMundial
+}
+
+class Jugador{
+	var property nombre
+	var property equipo
+	var amonestado = false
+}
+
+const Boca = new Equipo(
+	nombreEquipo = 'Boca',
+	campeonMundial = true
+)
+
+ const Zarate = new Jugador(
+	nombre = 'Zarate',
+	equipo = Boca
+)
+
+
+const Lanus = new Equipo(
+	nombreEquipo = 'Lanus',
+	campeonMundial = 0
+)
+
+const Sand = new Jugador(
+	nombre = 'Pepe Sand',
+	equipo = Lanus
+)
+const jugada1 = new Jugada (
+	equipoQueConvirtio = Boca,
+	ultimoJugador = 'Zarate',
+	circunstancias = ['fue mano']
+	
+)
+
+object justiciaCiega {
+	method circunstancia(jugada){
+		return (jugada.circunstancias().contains('la pelota no pasó completamente la línea') && jugada.circunstancias().contains('jugador adelantado') && jugada.circunstancias().contains('fue mano')) 
+	}
+}
+
+object fifa{
+	method circunstancia(jugada){
+		return jugada.equipoQueConvirtio().campeonMundial()
+	}
+}
+
+object masGoles{
+	method circunstancia(jugada){
+		return true
+	}
+}
+
+object varr {
+	
+	var modoFuncionamiento = fifa
+	var jugadaDeTarjeta = jugadaDeTarjeta1
+	
+	method golValido(jugada){
+		if (jugada.circunstancias().isEmpty())
+			return true
+		else 
+			return modoFuncionamiento.circunstancia(jugada)
+	
+	}
+	
+	method sacarTarjeta(jugada){
+		jugadaDeTarjeta.sacarTarjeta(jugada)
+		
+	}
+}
